@@ -47,6 +47,8 @@ def get_one_seed(id):
         status = 200
     ), 200
 
+
+# seed update route
 @seeds.route('/<id>', methods=['PUT'])
 def update_seed(id):
     payload = request.get_json()
@@ -57,4 +59,16 @@ def update_seed(id):
         data = model_to_dict(models.Seed.get_by_id(id)),
         message = 'seed updated successfully',
         status = 200,
+    ), 200
+
+# seed delete route
+@seeds.route('/<id>', methods=['DELETE'])
+def delete_seed(id):
+    delete_query = models.Seed.delete().where(models.Seed.id == id)
+    nums_of_rows_deleted = delete_query.execute()
+
+    return jsonify(
+        data={},
+        message=f"Successfully deleted {nums_of_rows_deleted} seed with id {id}",
+        status=200
     ), 200
