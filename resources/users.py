@@ -20,11 +20,11 @@ def user_test_route():
         'status': 200
     }), 200
 
+# user register route
 @users.route('/register', methods=['POST']) 
 def register():
     payload = request.get_json()
     payload['email'] = payload['email'].lower()
-    payload['username'] = payload['username'].lower()
 
     try:
         models.User.get(models.User.email == payload['email'])
@@ -55,3 +55,41 @@ def register():
             message=f"Successfully registered {created_user_dict['email']}",
             status=201
         ), 201
+
+# user login route
+@users.route('/login', methods=['POST'])
+def login():
+    payload = request.get_json()
+    payload['email'] = payload['email'].lower()
+
+    try:
+        user = models.User.get(models.User.email == payload['email'])
+        user_dict = model_to_dict(user)
+        password_is_good = check_password_hash(user_dict['password'], payload['password'])
+
+        if (password_is_good):
+            login_user(user)
+            print(f"Welcome, {current_user.username}")
+            
+            user_dict.pop('password')
+
+            return jsonify(
+                data=user_dict,
+                message=f"Successfully logged in as {user_dict['username']}",
+                status=200
+            ), 200
+
+        else:
+            return jsonify(
+                data={},
+                message="Email or password is incorrect",
+                status=401
+            ), 401
+
+    except models.DoesNotExist:
+        print('not found')
+        return jsonify(
+            data={},
+            message='Email not found',
+            status=401
+        ), 401
