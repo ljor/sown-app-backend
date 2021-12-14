@@ -46,3 +46,15 @@ def get_one_seed(id):
         message = 'Successfully retrieved seed',
         status = 200
     ), 200
+
+@seeds.route('/<id>', methods=['PUT'])
+def update_seed(id):
+    payload = request.get_json()
+
+    models.Seed.update(**payload).where(models.Seed.id == id).execute()
+
+    return jsonify(
+        data = model_to_dict(models.Seed.get_by_id(id)),
+        message = 'seed updated successfully',
+        status = 200,
+    ), 200
