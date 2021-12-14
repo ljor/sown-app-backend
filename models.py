@@ -1,9 +1,19 @@
 from enum import unique
 from peewee import *
 
+from flask_login import UserMixin
 from peewee import database_required
 
 DATABASE = SqliteDatabase('seeds.sqlite')
+
+class User(UserMixin, Model):
+    username = CharField()
+    email = CharField(unique=True)
+    password = CharField()
+    zip = IntegerField()
+
+    class Meta:
+        database = DATABASE
 
 class Seed(Model): 
     name = CharField()
@@ -21,6 +31,6 @@ class Seed(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([Seed], safe= True)
+    DATABASE.create_tables([User, Seed], safe= True)
     print("Connected to the database and created tables if they didn't already exist")
     DATABASE.close()
