@@ -93,3 +93,13 @@ def login():
             message='Email not found',
             status=401
         ), 401
+
+# user logout route
+@users.route('/logout')
+def logout():
+    logout_user()
+    return jsonify(
+        data={},
+        message='Successfully logged out',
+        status=200
+    ), 200
