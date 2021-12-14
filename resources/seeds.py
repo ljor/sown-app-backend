@@ -35,3 +35,14 @@ def create_seed():
         message='Successfully created seed',
         status=201
     ), 201
+
+# seed show route
+@seeds.route('/<id>', methods=['GET'])
+def get_one_seed(id):
+    seed = models.Seed.get_by_id(id)
+    print(seed)
+    return jsonify(
+        data = model_to_dict(seed),
+        message = 'Successfully retrieved seed',
+        status = 200
+    ), 200
