@@ -7,7 +7,7 @@ from peewee import database_required
 
 from playhouse.db_url import connect
 
-DATABASE = connect(os.environ.get('DATABASE_URL') or 'sqlite:///dogs.sqlite')
+DATABASE = connect(os.environ.get('DATABASE_URL') or 'sqlite://seeds.sqlite')
 
 class User(UserMixin, Model):
     username = CharField()
