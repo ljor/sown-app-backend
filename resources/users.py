@@ -124,3 +124,37 @@ def get_logged_in_user():
             message=f"Currently logged in as {user_dict['email']}",
             status=200
         ), 200
+
+# user update route
+@users.route('/user', methods=['PUT'])
+def update_user():
+
+    if not current_user.is_authenticated:
+        return jsonify(
+            data={},
+            message="No user is currently logged in",
+            status=401
+        ), 401
+
+    else: 
+        payload = request.get_json()
+        id = current_user
+
+        pw_hash = generate_password_hash(payload['password'])
+
+        models.User.update(
+            username=payload['username'],
+            email=payload['email'],
+            zip=payload['zip'],
+            password=pw_hash
+        ).where(models.User.id == id).execute()
+
+        updated_user = models.User.get_by_id(id)
+        updated_user_dict = model_to_dict(updated_user)
+        updated_user_dict.pop('password')
+
+        return jsonify(
+            data=updated_user_dict,
+            message='User updated successfully',
+            status=200,
+        ), 200
