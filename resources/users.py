@@ -158,3 +158,18 @@ def update_user():
             message='User updated successfully',
             status=200,
         ), 200
+
+# user delete route
+@users.route('/user', methods=['DELETE'])
+def delete_user():
+    id = current_user
+    delete_query = models.User.delete().where(models.User.id == id)
+    nums_of_rows_deleted = delete_query.execute()
+
+    logout_user()
+
+    return jsonify(
+        data={},
+        message=f"Successfully deleted {nums_of_rows_deleted} user",
+        status=200
+    ), 200
