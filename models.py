@@ -1,10 +1,13 @@
 from enum import unique
 from peewee import *
+import os
 
 from flask_login import UserMixin
 from peewee import database_required
 
-DATABASE = SqliteDatabase('seeds.sqlite')
+from playhouse.db_url import connect
+
+DATABASE = connect(os.environ.get('DATABASE_URL') or 'sqlite:///dogs.sqlite')
 
 class User(UserMixin, Model):
     username = CharField()
@@ -29,8 +32,15 @@ class Seed(Model):
     class Meta:
         database = DATABASE
 
+class UserSeed(Model):
+    user = ForeignKeyField(User)
+    seed = ForeignKeyField(Seed)
+
+    class Meta:
+        database = DATABASE
+
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Seed], safe= True)
+    DATABASE.create_tables([User, Seed, UserSeed], safe= True)
     print("Connected to the database and created tables if they didn't already exist")
     DATABASE.close()

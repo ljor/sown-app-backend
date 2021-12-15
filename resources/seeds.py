@@ -1,6 +1,7 @@
 import models
 
 from flask import Blueprint, request, jsonify
+from flask_login.utils import login_required
 
 from playhouse.shortcuts import model_to_dict
 
@@ -50,6 +51,7 @@ def get_one_seed(id):
 
 # seed update route
 @seeds.route('/<id>', methods=['PUT'])
+@login_required
 def update_seed(id):
     payload = request.get_json()
 
@@ -63,6 +65,7 @@ def update_seed(id):
 
 # seed delete route
 @seeds.route('/<id>', methods=['DELETE'])
+@login_required
 def delete_seed(id):
     delete_query = models.Seed.delete().where(models.Seed.id == id)
     nums_of_rows_deleted = delete_query.execute()
