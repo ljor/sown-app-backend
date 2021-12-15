@@ -1,6 +1,5 @@
-from enum import unique
-from peewee import *
 import os
+from peewee import *
 
 from flask_login import UserMixin
 from peewee import database_required
@@ -47,6 +46,6 @@ class UserSeed(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Seed, UserSeed], safe= True)
+    DATABASE.create_tables([User, Seed, UserSeed], safe=True)
     print("Connected to the database and created tables if they didn't already exist")
     DATABASE.close()

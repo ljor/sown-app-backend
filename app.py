@@ -2,7 +2,7 @@ from flask import Flask, jsonify, after_this_request
 import models
 import os
 from flask_cors import CORS
-from flask_login import LoginManager, login_manager
+from flask_login import LoginManager
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -55,10 +55,11 @@ def before_request():
     print("you should see this before each request")
     models.DATABASE.connect()
 
-    @after_this_request 
+    @after_this_request
     def after_request(response):
         """Close the db connetion after each request"""
         print("you should see this after each request")
+        models.DATABASE.close()
         return response
 
 if os.environ.get('FLASK_ENV') != 'development':
