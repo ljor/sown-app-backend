@@ -14,16 +14,17 @@ if 'ON_HEROKU' in os.environ:
 else:
     DATABASE = SqliteDatabase('seeds.sqlite')
 
-class User(UserMixin, Model):
+class BaseModel(Model):
+    class Meta:
+        database = DATABASE
+
+class User(UserMixin, BaseModel):
     username = CharField()
     email = CharField(unique=True)
     password = CharField()
     zip = IntegerField()
 
-    class Meta:
-        database = DATABASE
-
-class Seed(Model): 
+class Seed(BaseModel): 
     name = CharField()
     category = CharField()
     indoor_sow_start = IntegerField()
@@ -34,15 +35,10 @@ class Seed(Model):
     maturity = CharField()
     description = TextField()
 
-    class Meta:
-        database = DATABASE
 
-class UserSeed(Model):
+class UserSeed(BaseModel):
     user = ForeignKeyField(User)
     seed = ForeignKeyField(Seed)
-
-    class Meta:
-        database = DATABASE
 
 def initialize():
     DATABASE.connect()
