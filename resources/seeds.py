@@ -10,7 +10,7 @@ seeds = Blueprint('seeds', 'seeds')
 # seed index route
 @seeds.route('/')
 def seeds_index():
-    result = models.Seed.query.order_by(models.Seed.name.desc())
+    result = models.Seed
 
     seed_dicts = [model_to_dict(seed) for seed in result]
 
