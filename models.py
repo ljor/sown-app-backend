@@ -6,8 +6,6 @@ from peewee import database_required
 
 from playhouse.db_url import connect
 
-# DATABASE = connect(os.environ.get('DATABASE_URL') or 'sqlite://seeds.sqlite')
-
 if 'ON_HEROKU' in os.environ:
     DATABASE = connect(os.environ.get('DATABASE_URL'))
 
