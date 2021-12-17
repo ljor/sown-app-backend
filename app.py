@@ -15,6 +15,7 @@ DEBUG=True
 PORT=8000
 
 app = Flask(__name__)
+CORS(app)
 
 app.secret_key = os.environ.get("FLASK_APP_SECRET")
 login_manager = LoginManager()
