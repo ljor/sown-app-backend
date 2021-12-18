@@ -18,6 +18,8 @@ app = Flask(__name__)
 CORS(app)
 
 app.secret_key = os.environ.get("FLASK_APP_SECRET")
+app.config['SESSION_COOKIE_SAMESITE'] = "None"
+app.config['SESSION_COOKIE_SECURE'] = True
 login_manager = LoginManager()
 
 login_manager.init_app(app)
