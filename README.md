@@ -13,7 +13,7 @@ This app was created using React.js and Flask
 
 ## Installation
 
-Inside your python virtual environment, install with pip:
+Inside this directory and in your python virtual environment, install with pip:
 
 ```
 $ pip install -r requirements.txt
